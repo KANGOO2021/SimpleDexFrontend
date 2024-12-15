@@ -100,7 +100,7 @@ async function getReserves() {
         document.getElementById("reserveA").value = formattedReserveA;
         document.getElementById("reserveB").value = formattedReserveB;
     } catch (error) {
-        console.error("Error al obtener las reservas:", error);
+        //console.error("Error al obtener las reservas:", error);
         alert("Hubo un error al obtener las reservas.");
     }
 }
@@ -122,8 +122,8 @@ async function addLiquidity() {
         const balanceA = await tokenA.balanceOf(await signer.getAddress());
         const balanceB = await tokenB.balanceOf(await signer.getAddress());
 
-        console.log("Saldo Token A:", balanceA.toString());
-        console.log("Saldo Token B:", balanceB.toString());
+        //console.log("Saldo Token A:", balanceA.toString());
+        //console.log("Saldo Token B:", balanceB.toString());
 
         // Si no se tiene suficiente saldo de alguno de los tokens, alertar
         if (balanceA.lt(amountA)) {
@@ -141,21 +141,21 @@ async function addLiquidity() {
 
         // Si no se ha aprobado suficiente, pedir aprobación
         if (allowanceA.lt(amountA)) {
-            console.log("Aprobando Token A...");
+            //console.log("Aprobando Token A...");
             let txApproveA = await tokenA.approve(simpleDexAddress, amountA);
             await txApproveA.wait();  // Esperar a que la transacción de aprobación se confirme
         }
 
         if (allowanceB.lt(amountB)) {
-            console.log("Aprobando Token B...");
+            //console.log("Aprobando Token B...");
             let txApproveB = await tokenB.approve(simpleDexAddress, amountB);
             await txApproveB.wait();  // Esperar a que la transacción de aprobación se confirme
         }
 
         // Ahora que los tokens están aprobados, agregamos liquidez
-        console.log("Agregando liquidez...");
+        //console.log("Agregando liquidez...");
         const tx = await simpleDex.addLiquidity(amountA, amountB, {
-            gasLimit: 8000000  // Asegúrate de tener suficiente gas
+            gasLimit: 3000000  // Asegúrate de tener suficiente gas
         });
         await tx.wait();
         alert("Liquidez agregada exitosamente");
@@ -164,7 +164,7 @@ async function addLiquidity() {
         await getReserves();
         
     } catch (error) {
-        console.error("Error al agregar liquidez:", error);
+        //console.error("Error al agregar liquidez:", error);
         alert("Hubo un error al agregar liquidez.");
     }
 }
@@ -182,7 +182,7 @@ async function removeLiquidity() {
         // Actualizar las reservas después de retirar liquidez
         await getReserves();
     } catch (error) {
-        console.error("Error al retirar liquidez:", error);
+        //console.error("Error al retirar liquidez:", error);
         alert("Hubo un error al retirar liquidez.");
     }
 }
@@ -199,7 +199,7 @@ async function swapAforB() {
         // Actualizar las reservas después del intercambio
         await getReserves();
     } catch (error) {
-        console.error("Error al intercambiar Token A por B:", error);
+        //console.error("Error al intercambiar Token A por B:", error);
         alert("Hubo un error al intercambiar Token A por B.");
     }
 }
@@ -216,7 +216,7 @@ async function swapBforA() {
         // Actualizar las reservas después del intercambio
         await getReserves();
     } catch (error) {
-        console.error("Error al intercambiar Token B por A:", error);
+        //console.error("Error al intercambiar Token B por A:", error);
         alert("Hubo un error al intercambiar Token B por A.");
     }
 }
@@ -246,7 +246,7 @@ async function getPriceA() {
         const priceA = await simpleDex.getPrice(tokenAAddress);
         document.getElementById("priceA").value = ethers.utils.formatUnits(priceA, 18);
     } catch (error) {
-        console.error("Error al obtener el precio de Token A:", error);
+        //console.error("Error al obtener el precio de Token A:", error);
         alert("Hubo un error al obtener el precio de Token A.");
     }
 }
@@ -257,7 +257,7 @@ async function getPriceB() {
         const priceB = await simpleDex.getPrice(tokenBAddress);
         document.getElementById("priceB").value = ethers.utils.formatUnits(priceB, 18);
     } catch (error) {
-        console.error("Error al obtener el precio de Token B:", error);
+        //console.error("Error al obtener el precio de Token B:", error);
         alert("Hubo un error al obtener el precio de Token B.");
     }
 }
