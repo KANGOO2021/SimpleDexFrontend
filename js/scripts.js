@@ -1,8 +1,8 @@
 // Variables globales
 let provider, signer, simpleDex, tokenA, tokenB;
-const simpleDexAddress = "0x2fAf6934627092437d43a88Ed4A0169C3bc6De0D";  // Dirección de SimpleDEX
-const tokenAAddress = "0x7AD191F6C5DbCC634D3b0c761d5BF9ae3599e8c8";  // Dirección de Token A
-const tokenBAddress = "0xA9A79034d5a21f9d7a2E907D996EF6fD32a2fD74";  // Dirección de Token B
+const simpleDexAddress = "0xf93133f2C93C584FE6D1e9574A2be22C266046fF";  // Dirección de SimpleDEX
+const tokenAAddress = "0x06b4Bd486B5A0F9D69dD50c628480E2649D106A7";  // Dirección de Token A
+const tokenBAddress = "0x3A83576aC540609466445972c8D5fe8990AFE464";  // Dirección de Token B
 
 // Cargar los ABI de los contratos
 let simpleDexABI, tokenA_ABI, tokenB_ABI;
@@ -15,7 +15,7 @@ async function loadABIs() {
         const responseTokenB = await fetch('./ABIs/tokenB_ABI.json');
         tokenB_ABI = await responseTokenB.json();
 
-        const responseSimpleDex = await fetch('./ABIs/');
+        const responseSimpleDex = await fetch('./ABIs/simpleDexABI.json');
         simpleDexABI = await responseSimpleDex.json();
     } catch (error) {
         console.error("Error cargando los ABIs:", error);
