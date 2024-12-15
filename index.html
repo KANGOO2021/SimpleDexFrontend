@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleDEX Frontend</title>
+   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+            <div class="container-fluid">
+                <img class="logo-header mx-3" src="assets/ethkipu-logo.svg" width="150" height="50" alt="">
+    
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-center align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://sepolia.etherscan.io/address/0x06b4Bd486B5A0F9D69dD50c628480E2649D106A7#code" target="_blank">TokenA</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Preguntas">TokenB</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#Consultas">SimpleDex</a>
+                        </li>
+                    </ul>
+    
+                    <div class="d-flex justify-content-center me-2">
+                        <button id="connectWallet" class="btn btn-primary">Connect Wallet</button>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="input-group" style="position: relative;">
+                            <input type="text" id="walletAddress" class="form-control" placeholder="Wallet Address" readonly style="width: 420px;">
+                            <button class="btn btn-outline-secondary" type="button" id="copyButton">
+                                <i class="bi bi-clipboard"></i> <!-- Icono de copiar -->
+                            </button>
+                            
+                            <!-- Mensaje de copiado que aparece como un pop-up -->
+                            <div id="copyMessage" class="text-center text-black" style="display: none; position: absolute; top: 50px; left: 85%; transform: translateX(-50%);">
+                                Address copied!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+
+    <main>
+     
+        
+    <div class="container py-4">
+
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+              <!-- Approve Tokens -->
+              <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Approve Tokens</b></h5>
+                        <div class="mb-3">
+                            <label for="approveTokenA" class="form-label">Token A Amount</label>
+                            <input id="approveTokenA" type="number" class="form-control" placeholder="1000">
+                        </div>
+                        <div class="mb-3">
+                            <label for="approveTokenB" class="form-label">Token B Amount</label>
+                            <input id="approveTokenB" type="number" class="form-control" placeholder="1000">
+                        </div>
+                        <button id="btnApproveTokens" class="btn btn-warning w-100">Approve Tokens</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get Price -->
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Get Price</b></h5>
+                        <button id="btnGetPriceA" class="btn btn-info w-100 mb-3">Token A Price</button>
+                        <input id="priceA" type="text" class="form-control mb-3" placeholder="Token A Price" readonly>
+                        <button id="btnGetPriceB" class="btn btn-info w-100 mb-3">Token B Price</button>
+                        <input id="priceB" type="text" class="form-control" placeholder="Token B Price" readonly>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Add Liquidity -->
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Add Liquidity</b></h5>
+                        <div class="mb-3">
+                            <label for="addLiquidityA" class="form-label">Token A Amount</label>
+                            <input id="addLiquidityA" type="number" class="form-control" placeholder="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="addLiquidityB" class="form-label">Token B Amount</label>
+                            <input id="addLiquidityB" type="number" class="form-control" placeholder="0">
+                        </div>
+                        <button id="btnAddLiquidity" class="btn btn-success w-100">Add Liquidity</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remove Liquidity -->
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Remove Liquidity</b></h5>
+                        <div class="mb-3">
+                            <label for="removeLiquidityA" class="form-label">Token A Amount</label>
+                            <input id="removeLiquidityA" type="number" class="form-control" placeholder="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="removeLiquidityB" class="form-label">Token B Amount</label>
+                            <input id="removeLiquidityB" type="number" class="form-control" placeholder="0">
+                        </div>
+                        <button id="btnRemoveLiquidity" class="btn btn-danger w-100">Remove Liquidity</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Swap Tokens -->
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Swap Token A for B</b></h5>
+                        <div class="mb-3">
+                            <label for="swapAforB" class="form-label">Token A Amount</label>
+                            <input id="swapAforB" type="number" class="form-control" placeholder="0">
+                        </div>
+                        <button id="btnSwapAforB" class="btn btn-primary w-100">Swap</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Swap Token B for A</b></h5>
+                        <div class="mb-3">
+                            <label for="swapBforA" class="form-label">Token B Amount</label>
+                            <input id="swapBforA" type="number" class="form-control" placeholder="0">
+                        </div>
+                        <button id="btnSwapBforA" class="btn btn-primary w-100">Swap</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container mb-4">
+        <div class="row align-items-center">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body d-flex flex-column align-items-stretch">
+                        <button class="btn btn-success mb-2" id="btnGetReserveA">Get Token A Reserve</button>
+                        <input type="text" class="form-control" id="reserveA" placeholder="Result" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body d-flex flex-column align-items-stretch">
+                        <button class="btn btn-success mb-2" id="btnGetReserveB">Get Token B Reserve</button>
+                        <input type="text" class="form-control" id="reserveB" placeholder="Result" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="js/scripts.js"></script>
+</body>
+</html>
+
+
