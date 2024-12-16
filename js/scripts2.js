@@ -1,10 +1,10 @@
-// Global variables
+// Variables globales
 let provider, signer, simpleDex, tokenA, tokenB;
-const simpleDexAddress = "0xf93133f2C93C584FE6D1e9574A2be22C266046fF";  // SimpleDEX address
-const tokenAAddress = "0x06b4Bd486B5A0F9D69dD50c628480E2649D106A7";  // Token A address
-const tokenBAddress = "0x3A83576aC540609466445972c8D5fe8990AFE464";  // Token B address
+const simpleDexAddress = "0xf93133f2C93C584FE6D1e9574A2be22C266046fF";  // Dirección de SimpleDEX
+const tokenAAddress = "0x06b4Bd486B5A0F9D69dD50c628480E2649D106A7";  // Dirección de Token A
+const tokenBAddress = "0x3A83576aC540609466445972c8D5fe8990AFE464";  // Dirección de Token B
 
-// Load the contracts' ABIs
+// Cargar los ABI de los contratos
 let simpleDexABI, tokenA_ABI, tokenB_ABI;
 
 async function loadABIs() {
@@ -19,11 +19,11 @@ async function loadABIs() {
         simpleDexABI = await responseSimpleDex.json();
 
     } catch (error) {
-        console.error("Error loading ABIs:", error);
+        console.error("Error cargando los ABIs:", error);
     }
 }
 
-// Connect wallet
+// Conectar la wallet
 async function connectWallet() {
     if (window.ethereum) {
         provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -45,17 +45,17 @@ async function connectWallet() {
     }
 }
 
-// Function to copy address to clipboard
+// Function to copy the address to clipboard
 document.getElementById("copyButton").addEventListener("click", function() {
     const walletAddress = document.getElementById("walletAddress").value;
 
-    // Check if input is not empty
+    // Check if the input is not empty
     if (walletAddress.trim() !== "") {
         navigator.clipboard.writeText(walletAddress).then(() => {
             const copyMessage = document.getElementById("copyMessage");
-            copyMessage.style.display = "block";  // Show copy message
+            copyMessage.style.display = "block";  // Show the copy message
 
-            // Hide message after 3 seconds
+            // Hide the message after 3 seconds
             setTimeout(() => {
                 copyMessage.style.display = "none";
             }, 2000);
@@ -65,73 +65,76 @@ document.getElementById("copyButton").addEventListener("click", function() {
     }
 });
 
-// Function to get Token A reserve
+
+
+// Función para obtener la reserva de Token A
 async function getReserveA() {
     try {
-        // Get Token A reserve
+        // Obtener la reserva de Token A
         const reserveA = await simpleDex.reserveA();
 
-        // Format reserve to readable units
+        // Formatear la reserva a unidades legibles
         const formattedReserveA = ethers.utils.formatUnits(reserveA, 18);
 
-        // Update value in corresponding input
+        // Actualizar el valor en el input correspondiente
         document.getElementById("reserveA").value = formattedReserveA;
     } catch (error) {
-        alert("Error getting Token A reserve.");
+        alert("Hubo un error al obtener la reserva de Token A.");
     }
 }
 
-// Function to get Token B reserve
+// Función para obtener la reserva de Token B
 async function getReserveB() {
     try {
-        // Get Token B reserve
+        // Obtener la reserva de Token B
         const reserveB = await simpleDex.reserveB();
 
-        // Format reserve to readable units
+        // Formatear la reserva a unidades legibles
         const formattedReserveB = ethers.utils.formatUnits(reserveB, 18);
 
-        // Update value in corresponding input
+        // Actualizar el valor en el input correspondiente
         document.getElementById("reserveB").value = formattedReserveB;
     } catch (error) {
-        alert("Error getting Token B reserve.");
+        alert("Hubo un error al obtener la reserva de Token B.");
     }
 }
 
-// Function to add liquidity
+
+// Función para agregar liquidez
 async function addLiquidity() {
     const amountA = ethers.utils.parseUnits(document.getElementById("addLiquidityA").value, 18);
     const amountB = ethers.utils.parseUnits(document.getElementById("addLiquidityB").value, 18);
 
     try {
-        // Validate if approvals are sufficient
+        // Validar que las aprobaciones sean suficientes
         const allowanceA = await tokenA.allowance(await signer.getAddress(), simpleDexAddress);
         const allowanceB = await tokenB.allowance(await signer.getAddress(), simpleDexAddress);
 
-        // If not enough approved, alert
+        // Si no se ha aprobado suficiente, alertar
         if (allowanceA.lt(amountA)) {
-            alert("Please approve more Token A.");
+            alert("Por favor, aprueba más tokens de Token A.");
             return;
         }
         if (allowanceB.lt(amountB)) {
-            alert("Please approve more Token B.");
+            alert("Por favor, aprueba más tokens de Token B.");
             return;
         }
 
-        // Add liquidity using approved amounts
+        // Agregar liquidez usando los montos aprobados
         const tx = await simpleDex.addLiquidity(amountA, amountB, {
             gasLimit: 3000000  
         });
         await tx.wait();
 
-        alert("Liquidity added successfully");
+        alert("Liquidez agregada exitosamente");
 
     } catch (error) {
-        console.error("Error adding liquidity:", error);
-        alert("Error adding liquidity.");
+        console.error("Error al agregar liquidez:", error);
+        alert("Hubo un error al agregar liquidez.");
     }
 }
 
-// Function to remove liquidity
+// Función para retirar liquidez
 async function removeLiquidity() {
     const amountA = ethers.utils.parseUnits(document.getElementById("removeLiquidityA").value, 18);
     const amountB = ethers.utils.parseUnits(document.getElementById("removeLiquidityB").value, 18);
@@ -139,40 +142,42 @@ async function removeLiquidity() {
     try {
         const tx = await simpleDex.removeLiquidity(amountA, amountB);
         await tx.wait();
-        alert("Liquidity removed successfully");
+        alert("Liquidez retirada exitosamente");
+
+
     } catch (error) {
-        alert("Error removing liquidity.");
+        alert("Hubo un error al retirar liquidez.");
     }
 }
 
-// Function to swap Token A for B
+// Función para intercambiar Token A por B
 async function swapAforB() {
     const amountA = ethers.utils.parseUnits(document.getElementById("swapAforB").value, 18);
 
     try {
         const tx = await simpleDex.swapAforB(amountA);
         await tx.wait();
-        alert("Swap successful");
+        alert("Intercambio realizado con éxito");
     } catch (error) {
-        alert("Error swapping Token A for B.");
+        alert("Hubo un error al intercambiar Token A por B.");
     }
 }
 
-// Function to swap Token B for A
+// Función para intercambiar Token B por A
 async function swapBforA() {
     const amountB = ethers.utils.parseUnits(document.getElementById("swapBforA").value, 18);
 
     try {
         const tx = await simpleDex.swapBforA(amountB);
         await tx.wait();
-        alert("Swap successful");
+        alert("Intercambio realizado con éxito");
 
     } catch (error) {
-        alert("Error swapping Token B for A.");
+        alert("Hubo un error al intercambiar Token B por A.");
     }
 }
 
-// Function to approve Token A or B
+// Función para aprobar Token A o B
 async function approveTokens() {
     const amountA = ethers.utils.parseUnits(document.getElementById("approveTokenA").value, 18);
     const amountB = ethers.utils.parseUnits(document.getElementById("approveTokenB").value, 18);
@@ -188,55 +193,55 @@ async function approveTokens() {
         await tx.wait();
     }
 
-    alert("Tokens approved successfully");
+    alert("Tokens aprobados exitosamente");
 }
 
-// Function to get Token A price
+// Función para obtener el precio de Token A
 async function getPriceA() {
     try {
         const priceA = await simpleDex.getPrice(tokenAAddress);
         document.getElementById("priceA").value = ethers.utils.formatUnits(priceA, 18);
     } catch (error) {
-        alert("Error getting Token A price.");
+        alert("Hubo un error al obtener el precio de Token A.");
     }
 }
 
-// Function to get Token B price
+// Función para obtener el precio de Token B
 async function getPriceB() {
     try {
         const priceB = await simpleDex.getPrice(tokenBAddress);
         document.getElementById("priceB").value = ethers.utils.formatUnits(priceB, 18);
     } catch (error) {
-        alert("Error getting Token B price.");
+        alert("Hubo un error al obtener el precio de Token B.");
     }
 }
 
-// Wallet connection event
+// Evento de conexión de wallet
 document.getElementById("connectWallet").addEventListener("click", connectWallet);
 
-// Add liquidity event
+// Evento para agregar liquidez
 document.getElementById("btnAddLiquidity").addEventListener("click", addLiquidity);
 
-// Remove liquidity event
+// Evento para retirar liquidez
 document.getElementById("btnRemoveLiquidity").addEventListener("click", removeLiquidity);
 
-// Swap Token A for B event
+// Evento para intercambiar Token A por B
 document.getElementById("btnSwapAforB").addEventListener("click", swapAforB);
 
-// Swap Token B for A event
+// Evento para intercambiar Token B por A
 document.getElementById("btnSwapBforA").addEventListener("click", swapBforA);
 
-// Approve tokens event
+// Evento para aprobar tokens
 document.getElementById("btnApproveTokens").addEventListener("click", approveTokens);
 
-// Get Token A and B price event
+// Evento para obtener el precio de Token A y B
 document.getElementById("btnGetPriceA").addEventListener("click", getPriceA);
 document.getElementById("btnGetPriceB").addEventListener("click", getPriceB);
 
-// Assign specific functions to each button
+
+// Asignar las funciones específicas a cada botón
 document.getElementById("btnGetReserveA").addEventListener("click", getReserveA);
 document.getElementById("btnGetReserveB").addEventListener("click", getReserveB);
-
 
 
 
