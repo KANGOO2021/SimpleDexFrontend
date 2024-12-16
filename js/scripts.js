@@ -1,8 +1,8 @@
 // Global variables
 let provider, signer, simpleDex, tokenA, tokenB;
-const simpleDexAddress = "0xf93133f2C93C584FE6D1e9574A2be22C266046fF";  // SimpleDEX address
-const tokenAAddress = "0x06b4Bd486B5A0F9D69dD50c628480E2649D106A7";  // Token A address
-const tokenBAddress = "0x3A83576aC540609466445972c8D5fe8990AFE464";  // Token B address
+const simpleDexAddress = "0x814F4110e626F555E4632a1C030e506c53641afE";  // SimpleDEX address
+const tokenAAddress = "0xF6E5F9F5475231B432F3063274CFB7Ad1A082a3e";  // Token A address
+const tokenBAddress = "0x92db406E362dB206c6e5A0D25460d898DAf6cdaa";  // Token B address
 
 // Load the contracts' ABIs
 let simpleDexABI, tokenA_ABI, tokenB_ABI;

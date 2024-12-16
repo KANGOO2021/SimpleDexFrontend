@@ -57,12 +57,12 @@ Follow this step-by-step order of actions to interact with the SimpleDEX contrac
 
 1. Clone this repository to your local machine:
    ```bash
-   git clone https://github.com/your-repository/frontend-smart-contracts.git
+   https://github.com/KANGOO2021/SimpleDexFrontend
    ```
 
 2. Navigate to the project folder:
    ```bash
-   cd frontend-smart-contracts
+   cd SimpleDexFrontend
    ```
 
 3. Open the `index.html` file in your browser, or host it locally using a web server (e.g., using `http-server` or a similar tool).
